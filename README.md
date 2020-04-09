@@ -1,79 +1,42 @@
-# Daily Briefings Service (Python)
+# "Web App" Exercise
 
-Sends you a customized email every morning, with information of interest such as the upcoming weather forecast.
+> Prerequisites:
+>   + [Software Products and Services](/units/unit-9.md)
+>   + [The Open Weather API](https://home.openweathermap.org/api_keys) (sign up and obtain an API Key)
+>   + [The `flask` Package](/notes/python/packages/flask.md)
+>   + [Heroku](/notes/clis/heroku.md) (sign up for a account and install the Heroku CLI)
+>   + [Web Service Exercise](/exercises/web-service/README.md), especially the deployment process
 
-## Setup
+## Learning Objectives
 
-Fork this repo and clone it onto your local computer (for example to your Desktop), then navigate there from the command-line:
+  + Practice leveraging third-party APIs and Python packages.
+  + Practice security and privacy best practices by using a "dotenv" approach in conjunction with a ".gitignore" file.
+  + Learn how to "deploy" a Python web application to a user-facing "production" environment, namely an application server hosted by Heroku, and configure the server to host the application publicly over the Internet.
 
-```sh
-cd ~/Desktop/daily-briefings-py/
-```
+## Instructions
 
-Create and activate a new Anaconda virtual environment, perhaps named "briefings-env":
+### Setup
 
-```sh
-conda create -n briefings-env python=3.7
-conda activate briefings-env
-```
+Fork this Weather Web App repo (LINK TBA!!!) under your own control and then clone / download it onto your local computer.
 
-Then, from within the virtual environment, install package dependencies:
+Follow the README instructions to setup a virtual environment, install package dependencies, and configure environment variables.
 
-```sh
-pip install -r requirements.txt
-```
+### Running Locally
 
-Obtain API Keys from the [Open Weather](https://home.openweathermap.org/api_keys), and [SendGrid](https://app.sendgrid.com/settings/api_keys) services. Create a new file called ".env" in the root directory of this repo, and paste the following contents inside, using your own values as appropriate:
+Continue following the README instructions to run web application locally and view it in a browser at localhost:5000.
 
-```sh
-# .env example
+### Deploying to Production
 
-APP_ENV="development" # or set to "production" on Heroku server
+After demonstrating the ability to successfully run the web app locally, repeat the process that you followed when [deploying a web service](/exercises/web-service/deploying.md) to upload the source code onto a remote server and configure environment variables, etc.
 
-OPEN_WEATHER_API_KEY="___________"
-MY_ZIP="10017"
-
-SENDGRID_API_KEY="_______________"
-MY_EMAIL_ADDRESS="hello@example.com"
-
-MY_NAME="Jon Snow"
-```
-
-## Usage
-
-From within the virtual environment, ensure you can run each of the following files and see them produce their desired results of: printing today's weather forecast, and sending an example email, respectively.
+There are no scripts to be scheduled, so skip that part. Instead, you'll need to create a special file called the "Procfile" in the repo's root directory to instruct the Heroku server which command to invoke in order to run the app:
 
 ```sh
-python -m app.weather_service # note the module-syntax invocation
-#> TODAY'S WEATHER FORECAST IS ...
+web: gunicorn "web_app:create_app()"
 ```
 
-```sh
-python -m app.email_service # note the module-syntax invocation
-#> SENDING EMAIL TO ...
-```
+> NOTE: since we're instructing the server to use the `gunicorn` package (Heroku's preferred tool) to run the web app on production, we'll also need to add that package to the "requirements.txt" file so it will be installed on the server during the deployment process.
 
-> NOTE: the Sendgrid emails might first start showing up in spam, until you designate them as coming from a trusted source (i.e. "Looks Safe")
->
-> ![](https://user-images.githubusercontent.com/1328807/77856232-c7a0ff80-71c3-11ea-9dce-7a32b88701c6.png)
+Save the "Procfile" and "requirements.txt" files, and make a commit before re-attempting to deploy your app to the server.
 
-As long as each of those scripts works by itself, you can send the daily briefing email:
-
-```sh
-python -m app.daily_briefing # note the module-syntax invocation
-```
-
-![](https://user-images.githubusercontent.com/1328807/77860069-173ef580-71db-11ea-83c6-5897bb9f4f51.png)
-
-
-##Web App Component
-
-
-##Flask
-
-# Mac:
-FLASK_APP=web_app flask run
-
-# Windows:
-export FLASK_APP=web_app # first time, to set the env var
-flask run # subsequent times
+View the server logs and troubleshoot as necessary until you're able to see the weather forecast in the browser. Nice!
